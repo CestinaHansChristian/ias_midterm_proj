@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 10, 2024 at 07:07 AM
+-- Generation Time: Mar 10, 2024 at 04:30 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -38,9 +38,8 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`account_id`, `Username`, `Pass`) VALUES
-(33, 'hans', '$2y$10$B1UtW/cYEZ.kf/6j51jW9ercqb4E4jhyan.YqOG3UnmWQq/RTY/ty'),
-(34, 'chris', '$2y$10$ipwXcIuuIxsf7DMBqxpPsexIlGDNuo3pDWKZ61HeFLCm22Oe7rtEO'),
-(35, 'admin', '$2y$10$R/ZyJ5h0WM9/qRcpAkiIYujvIw3YDyvVPMpFD3WmjBAGMI/DL6Hw6');
+(1, 'secret', '$2y$10$tpagM19fb2q9.II1uC2cuuF9KdaA.sq9h.QRh2p5CaV/FkebtVbK.'),
+(2, 'hans', '$2y$10$ZXn9/wkGLo.XzsqJbeVyt.g9NfVsKDXiRnCfdJ48aALMW6jEgbeOu');
 
 -- --------------------------------------------------------
 
@@ -50,6 +49,7 @@ INSERT INTO `accounts` (`account_id`, `Username`, `Pass`) VALUES
 
 CREATE TABLE `message_table` (
   `message_id` int(11) NOT NULL,
+  `sender_id` int(11) NOT NULL,
   `message_box` text NOT NULL,
   `send_to` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -78,7 +78,7 @@ ALTER TABLE `message_table`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `message_table`
