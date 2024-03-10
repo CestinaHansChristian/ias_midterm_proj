@@ -1,0 +1,111 @@
+<?php
+    include('connection.php');
+    session_start()
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Send Message</title>
+</head>
+<?php
+    function encrypting_message($message,$key) {
+        $encrypted_message = strlen($message);
+        $secret_key = strlen($key);
+
+        $encrpyted_result_string = "";
+        for ($i = 0; $i < $encrypted_message; $i++) {
+            $encrpyted_result_string .= ($message[$i] ^ $key[$i % $secret_key]);
+        }
+        return $encrpyted_result_string;
+    }
+
+    function write_message($result_string,$sqlConn) {
+        $message_query = "INSERT INTO message_table(message_box)
+                            VALUES('$result_string')";
+        if($sqlConn->query($message_query) == TRUE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    if(isset($_POST["submit_btn"]) && !empty($_POST['message_box'])) {
+        $message_input = $_POST['message_box'];
+        
+        $result_string = encrypting_message($message_input,"secret");
+
+        $write_response = write_message($result_string,$sqlConn);
+        $response = ($write_response) ? "Message sent" : "Error cannot send";
+        
+        echo $response;
+        echo "<meta http-equiv='refresh' content='0'>";
+    } else {
+        
+    }
+?>
+<body class="m-40">
+    <div class="container border-2 border-black mx-auto rounded-lg">
+        <div class="h-52 w-full border-4 border-red-300 rounded-t-lg">
+            <div class="overflow-y-scroll h-full">
+                <div class="h-52">
+                    <?php
+                        // $get_message_query = "SELECT message_box FROM message_table";
+                        // $message_frm_dbase = $sqlConn->query($get_message_query);
+
+                        // $message_ascii = array();
+                        // while($row_message = mysqli_fetch_assoc($message_frm_dbase)) {
+                        //     for($i = 0; $i < count($row_message); $i++) {
+                                
+                        //         $message_ascii[$i] = $row_message['message_box'];
+                                
+                        //         $decrpyted_pass = encrypting_message($message_ascii[$i],'secret');
+                        //         echo $decrpyted_pass ."<br>";
+                        //     }
+                        // }
+                    ?>
+                    <!-- sender screen -->
+                    <div class="h-auto border-2 border-black sender-message-container">
+                        <div class="message-content p-1 border-2 border-blue-700 m-1 grid-cols-3 flex flex-row-reverse gap-x-2">
+                            <div class=" grid border-2 border-black bg-red-400 rounded-full h-12 min-w-12"></div>
+                            <div class="grid place-content-center border-2 border-black rounded-lg">
+                                <p class="text-xl bg-violet-400 p-2 rounded-lg">
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minima, id?
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end sender screen -->
+
+                    <!-- other screen start-->
+                    <div class="h-auto border-2 border-black sender-message-container">
+                        <div class="message-content p-1 border-2 border-blue-700 m-1 grid-cols-3 flex gap-x-2">
+                            <div class=" grid border-2 border-black bg-yellow-400 rounded-full h-12 min-w-12 "></div>
+                            <div class="grid place-content-center border-2 border-black rounded-lg">
+                                <p class="text-xl bg-violet-400 p-2 rounded-lg">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit eaque delectus consectetur dolore consequatur tenetur hic ab, earum atque temporibus.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- other screen end -->
+                </div>
+            </div>
+        </div>
+        <form action="" method="post">
+            <div class="message-container sm:mx-auto grid grid-col-3 bg-cyan-500 gap-3 p-2">
+                <input type="text" name="message_box" id="" class="min-w-6 rounded-xl col-start-1 col-end-5 border-2 focus:border-black placeholder:ps-2 focus:ps-2" placeholder="Message. . .">
+                <button name="submit_btn" type="submit" class="min-w-6 border-2 border-slate-200 bg-slate-200 col-end-6 hover:bg-green-500 rounded-xl text-xs sm:text-xl font-semibold">Send</button>
+                <button name="logout_btn" type="submit" class="min-w-6 border-2 border-slate-200 bg-white col-end-7 hover:bg-red-500 rounded-xl text-xs sm:text-xl font-semibold">Logout</button>
+            </div>
+        </form>
+    </div>
+</body>
+    <?php
+        if(isset($_POST["logout_btn"])) {
+            header("Location:login_account.php",true);
+        }
+    ?>
+</html>
