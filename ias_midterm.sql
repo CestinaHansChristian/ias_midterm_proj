@@ -22,6 +22,9 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
+CREATE DATABASE ias_midterm
+
+USE ias_midterm
 
 --
 -- Table structure for table `accounts`
