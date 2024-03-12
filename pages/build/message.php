@@ -53,7 +53,8 @@
     <div class="container border-2 border-black mx-auto rounded-lg">
         <div class="h-52 w-full border-4 border-red-300 rounded-t-lg">
             <div class="overflow-y-scroll h-full">
-                <div class="h-52">
+                <!-- textbox container -->
+                <div class="h-auto bg-gradient-to-br from-amber-100 to-slate-300 py-1">
                     <?php
                         // $get_message_query = "SELECT message_box FROM message_table WHERE send_to = ''";
                         // $message_frm_dbase = $sqlConn->query($get_message_query);
@@ -68,27 +69,52 @@
                         //         echo $decrpyted_pass ."<br>";
                         //     }
                         // }
+
+                        
+                            
                     ?>
                     <!-- sender screen -->
-                    <div class="h-auto border-2 border-black sender-message-container">
-                        <div
-                            class="message-content p-1 border-2 border-blue-700 m-1 grid-cols-3 flex flex-row-reverse gap-x-2">
-                            <div class="grid border-2 border-black bg-red-400 rounded-full h-12 min-w-12">
-                                <p class="text-xs text-white text-wrap">
-                                    <?php echo $_SESSION['user_logged_in']; ?>
+                    <div class="h-auto sender-message-container">
+                        <?php
+                            $current_user = $_SESSION['user_logged_in'];
+                            $preview_message = "SELECT message_box from message_table ";
+                            $sender_msg_prev = $sqlConn->query($preview_message);
+                            // where send_to = '$current_user' UNION SELECT Username FROM accounts WHERE = '$current_user'
+
+                            $message_input_array = array();
+                            while($row_message = mysqli_fetch_assoc($sender_msg_prev)) {
+                                for($i = 0; $i < count($row_message); $i++) {
+                                    $message_ascii[$i] = $row_message['message_box'];
+                                    $decrpyted_pass = encrypting_message($message_ascii[$i],'secret');
+                                        
+                                
+                        ?>
+                        <div class="message-content p-1  m-1 grid-cols-3 flex flex-row-reverse gap-x-2">
+                            <div
+                                class="grid place-content-center border-2 border-red-50 bg-red-400 rounded-full h-14 min-w-14">
+
+                                <p class="text-xs text-black font-extrabold">
+                                    <?php echo $_SESSION['user_logged_in'];  ?>
                                 </p>
+
                             </div>
-                            <div class="grid place-content-center border-2 border-black rounded-lg">
-                                <p class="text-xl bg-violet-400 p-2 rounded-lg">
-                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minima, id?
+                            <div class="grid place-content-center border-4 border-violet-200 rounded-md">
+                                <p class="text-xl bg-violet-400 p-3 rounded-sm">
+                                    <?php echo $decrpyted_pass;  ?>
                                 </p>
                             </div>
                         </div>
+                        <?php
+                                } 
+                            }
+                        ?>
                     </div>
+
+
                     <!-- end sender screen -->
 
                     <!-- other screen start-->
-                    <div class="h-auto border-2 border-black sender-message-container">
+                    <!-- <div class="h-auto border-2 border-black sender-message-container">
                         <div class="message-content p-1 border-2 border-blue-700 m-1 grid-cols-3 flex gap-x-2">
                             <div class=" grid border-2 border-black bg-yellow-400 rounded-full h-12 min-w-12 "></div>
                             <div class="grid place-content-center border-2 border-black rounded-lg">
@@ -98,7 +124,7 @@
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- other screen end -->
                 </div>
             </div>
