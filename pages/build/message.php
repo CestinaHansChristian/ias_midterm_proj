@@ -145,7 +145,8 @@
 <?php
         if(isset($_POST["logout_btn"])) {
             session_destroy();
-            header("Location:login_account.php",true);
+            // header("Location:login_account.php",true);
+            echo "<script>window.location.href = 'login_account.php'</script>";
         }
     ?>
 
